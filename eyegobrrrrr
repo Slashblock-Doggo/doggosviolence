@@ -1,0 +1,40 @@
+using ThunderRoad;
+using Sirenix.Utilities;
+using UMA.CharacterSystem;
+using UMA;
+using UnityEngine;
+
+namespace eyegobrrrrrr
+{
+    public class Class1 : LevelModule
+    {
+        public override void OnLevelLoaded(LevelDefinition levelDefinition)
+        {
+            base.OnLevelLoaded(levelDefinition);
+            EventManager.onCreatureHitEvent += EventManager_onCreatureLHitEvent;
+            EventManager.onCreatureHitEvent += EventManager_onCreatureRHitEvent;
+        }
+        public void EventManager_onCreatureLHitEvent(Creature creature, ref CollisionStruct collisionStruct)
+        {
+            if (collisionStruct.damageStruct.hitRagdollPart == creature.ragdoll.GetPart(HumanBodyBones.LeftEye))
+            {
+                if (creature.data.id == "HumanMale" || creature.data.id == "HumanFemale")
+                {
+                    creature.ragdoll.GetPart(HumanBodyBones.LeftEye).transform.position = creature.ragdoll.GetPart(HumanBodyBones.Head).transform.position + (creature.ragdoll.GetPart(HumanBodyBones.Head).transform.forward * 0.1f);
+                    creature.ragdoll.SetState(Creature.State.Destabilized);
+                    }
+            }
+            }
+        public void EventManager_onCreatureRHitEvent(Creature creature, ref CollisionStruct collisionStruct)
+        {
+            if (collisionStruct.damageStruct.hitRagdollPart == creature.ragdoll.GetPart(HumanBodyBones.RightEye))
+            {
+                if (creature.data.id == "HumanMale" || creature.data.id == "HumanFemale")
+                    {
+                    creature.ragdoll.GetPart(HumanBodyBones.RightEye).transform.position = creature.ragdoll.GetPart(HumanBodyBones.Head).transform.position + (creature.ragdoll.GetPart(HumanBodyBones.Head).transform.forward * 0.1f);
+                    creature.ragdoll.SetState(Creature.State.Destabilized);
+                }
+            }
+        }
+    }
+    }
